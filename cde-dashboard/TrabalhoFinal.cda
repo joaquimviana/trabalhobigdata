@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CDADescriptor>
+   <DataSources>
+      <Connection id="ds_dados_chart1" type="kettle.TransFromFile">
+         <KtrFile>etl/loadData.ktr</KtrFile>
+         <variables datarow-name="anoParam" variable-name="anoParam"/>
+         <variables datarow-name="mesParam" variable-name="mesParam"/>
+         <variables datarow-name="dominioParam" variable-name="dominioParam"/>
+      </Connection>
+      <Connection id="ds_ano" type="kettle.TransFromFile">
+         <KtrFile>etl/load Filtro Ano.ktr</KtrFile>
+      </Connection>
+      <Connection id="ds_mes" type="kettle.TransFromFile">
+         <KtrFile>etl/load Filtro Mes.ktr</KtrFile>
+      </Connection>
+      <Connection id="ds_dominio" type="kettle.TransFromFile">
+         <KtrFile>etl/load Filtro Dominio.ktr</KtrFile>
+      </Connection>
+   </DataSources>
+   <DataAccess access="public" connection="ds_dados_chart1" id="ds_dados_chart1" type="kettle">
+      <Name>ds_dados_chart1</Name>
+      <Cache duration="0" enabled="false"/>
+      <Columns/>
+      <Parameters>
+         <Parameter default="" name="anoParam" type="Integer"/>
+         <Parameter default="" name="mesParam" type="Integer"/>
+         <Parameter default="" name="dominioParam" type="String"/>
+      </Parameters>
+      <Query><![CDATA[Dados Chart]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="ds_ano" id="ds_ano" type="kettle">
+      <Name>ds_ano</Name>
+      <Cache duration="3600000" enabled="true"/>
+      <Columns/>
+      <Output indexes="1" mode="exclude"/>
+      <Parameters/>
+      <Query><![CDATA[Dados Filtro Ano]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="ds_mes" id="ds_mes" type="kettle">
+      <Name>ds_mes</Name>
+      <Cache duration="3600000" enabled="true"/>
+      <Columns/>
+      <Output indexes="1" mode="exclude"/>
+      <Parameters/>
+      <Query><![CDATA[Dados Filtro Mes]]></Query>
+   </DataAccess>
+   <DataAccess access="public" connection="ds_dominio" id="ds_dominio" type="kettle">
+      <Name>ds_dominio</Name>
+      <Cache duration="3600000" enabled="true"/>
+      <Columns/>
+      <Output indexes="1" mode="exclude"/>
+      <Parameters/>
+      <Query><![CDATA[Dados Filtro Dominio]]></Query>
+   </DataAccess>
+</CDADescriptor>
