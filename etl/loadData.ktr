@@ -11,17 +11,17 @@
     <parameters>
       <parameter>
         <name>anoParam</name>
-        <default_value>2015</default_value>
+        <default_value>2014</default_value>
         <description/>
       </parameter>
       <parameter>
         <name>dominioParam</name>
-        <default_value>aa</default_value>
+        <default_value>en</default_value>
         <description/>
       </parameter>
       <parameter>
         <name>mesParam</name>
-        <default_value>12</default_value>
+        <default_value>1</default_value>
         <description/>
       </parameter>
       <parameter>
@@ -463,6 +463,11 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>Get File Names</from>
+      <to>Get Variables</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>Get Variables</from>
       <to>Spark Dados Chart</to>
       <enabled>Y</enabled>
@@ -482,7 +487,7 @@
     <fields>      <field>        <name>0</name>
         <rename>Dia</rename>
       </field>      <field>        <name>1</name>
-        <rename>Quantidade M&#xe9;dia</rename>
+        <rename>Quantidade de Edi&#xe7;&#xf5;es</rename>
       </field>        <select_unspecified>N</select_unspecified>
     </fields>    <cluster_schema/>
     <remotesteps>
@@ -492,7 +497,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>528</xloc>
+      <xloc>512</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
@@ -526,7 +531,7 @@
         <name>anoParam</name>
         <variable>&#x24;&#x7b;anoParam&#x7d;</variable>
         <type>Number</type>
-        <format/>
+        <format>&#x23;</format>
         <currency/>
         <decimal/>
         <group/>
@@ -538,7 +543,7 @@
         <name>mesParam</name>
         <variable>&#x24;&#x7b;mesParam&#x7d;</variable>
         <type>Number</type>
-        <format/>
+        <format>&#x23;</format>
         <currency/>
         <decimal/>
         <group/>
@@ -567,8 +572,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>176</xloc>
-      <yloc>80</yloc>
+      <xloc>112</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
     </step>
@@ -590,7 +595,7 @@
 <reservoir_sampling_size/>
 <reservoir_sampling_seed>1</reservoir_sampling_seed>
 <include_input_as_output>N</include_input_as_output>
-<py_script>&#x23;&#xa;&#x23; Licensed to the Apache Software Foundation &#x28;ASF&#x29; under one or more&#xa;&#x23; contributor license agreements.  See the NOTICE file distributed with&#xa;&#x23; this work for additional information regarding copyright ownership.&#xa;&#x23; The ASF licenses this file to You under the Apache License, Version 2.0&#xa;&#x23; &#x28;the &#x22;License&#x22;&#x29;&#x3b; you may not use this file except in compliance with&#xa;&#x23; the License.  You may obtain a copy of the License at&#xa;&#x23;&#xa;&#x23;    http&#x3a;&#x2f;&#x2f;www.apache.org&#x2f;licenses&#x2f;LICENSE-2.0&#xa;&#x23;&#xa;&#x23; Unless required by applicable law or agreed to in writing, software&#xa;&#x23; distributed under the License is distributed on an &#x22;AS IS&#x22; BASIS,&#xa;&#x23; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xa;&#x23; See the License for the specific language governing permissions and&#xa;&#x23; limitations under the License.&#xa;&#x23;&#xa;&#xa;from __future__ import print_function&#xa;import pandas as pd&#xa;import sys&#xa;import os&#xa;SPARK_HOME &#x3d; os.environ&#x5b;&#x22;SPARK_HOME&#x22;&#x5d;&#x3d;&#x22;&#x2f;srv&#x2f;spark&#x22;&#xa;PYTHONPATH&#x3d;os.environ&#x5b;&#x22;PYTHONPATH&#x22;&#x5d;&#x3d; &#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j-0.8.2.1-src.zip&#x3a;&#x2f;srv&#x2f;spark&#x2f;spark&#x2f;python&#x22;&#xa;&#xa;&#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x2f;accumulators&#x22;&#x29; &#xa;from operator import add&#xa;&#x23;print&#x28;sys.argv&#x5b;1&#x5d;&#x29;&#xa;param &#x3d; config.loc&#x5b;0,&#x22;param&#x22;&#x5d;&#xa;mesParam &#x3d; config.loc&#x5b;0,&#x22;mesParam&#x22;&#x5d;&#xa;anoParam &#x3d; config.loc&#x5b;0,&#x22;anoParam&#x22;&#x5d;&#xa;dominioParam &#x3d; config.loc&#x5b;0,&#x22;dominioParam&#x22;&#x5d;&#xa;&#xa;from pyspark.sql import SparkSession&#xa;&#xa;&#xa;&#xa;&#xa;&#xa;spark &#x3d; SparkSession&#x5c;&#xa;    .builder&#x5c;&#xa;    .appName&#x28;&#x22;PythonQuery&#x22;&#x29;&#x5c;&#xa;    .getOrCreate&#x28;&#x29;&#xa;&#xa;lines &#x3d; spark.read.csv&#x28;&#x27;&#x2f;home&#x2f;joaquim&#x2f;TrabalhoSpark&#x2f;dados&#x2f;PageViewsPerDayAll.csv&#x27;&#x29;&#xa;&#xa;lines &#x3d; lines.rdd.map&#x28;lambda row&#x3a; &#x5b;row&#x5b;0&#x5d;,row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;0&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;1&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;2&#x5d;,row&#x5b;2&#x5d;&#x5d;&#x29;&#xa;&#xa;if&#x28;dominioParam &#x21;&#x3d; &#x22;Todos&#x22;&#x29;&#x3a;&#xa;	lines &#x3d; lines.filter&#x28;lambda w&#x3a; w&#x5b;0&#x5d;.startswith&#x28;dominioParam&#x29;&#x29;&#xa;&#x23;if&#x28;anoParam &#x21;&#x3d; 0&#x29;&#x3a;&#xa;&#x23;	lines &#x3d; lines.filter&#x28;lambda w&#x3a; w&#x5b;0&#x5d;.startswith&#x28;dominioParam&#x29;&#x29;&#xa;&#x23;if&#x28;dominioParam &#x21;&#x3d; 0&#x29;&#x3a;&#xa;&#x23;	lines &#x3d; lines.filter&#x28;lambda w&#x3a; w&#x5b;0&#x5d;.startswith&#x28;dominioParam&#x29;&#x29;&#xa;&#xa;&#xa;&#xa;lines &#x3d; lines.map&#x28;lambda x&#x3a; &#x28;int&#x28;x&#x5b;3&#x5d;&#x29;, int&#x28;x&#x5b;4&#x5d;&#x29;&#x29;&#x29;&#xa;&#xa;lines &#x3d; lines.aggregateByKey&#x28;&#x28;0,0&#x29;, lambda a,b&#x3a; &#x28;a&#x5b;0&#x5d; &#x2b; b,    a&#x5b;1&#x5d; &#x2b; 1&#x29;, lambda a,b&#x3a; &#x28;a&#x5b;0&#x5d; &#x2b; b&#x5b;0&#x5d;, a&#x5b;1&#x5d; &#x2b; b&#x5b;1&#x5d;&#x29;&#x29;&#xa;&#xa;counts &#x3d; lines.mapValues&#x28;lambda v&#x3a; v&#x5b;0&#x5d;&#x2f;v&#x5b;1&#x5d;&#x29;&#xa;&#xa;counts &#x3d; counts.sortBy&#x28;lambda a&#x3a; a&#x5b;0&#x5d;&#x29;&#xa;&#xa;output &#x3d; counts.collect&#x28;&#x29;&#xa;&#xa;for &#x28;day, count&#x29; in output&#x3a;&#xa;    print&#x28;&#x22;&#x25;s&#x3a; &#x25;i&#x22; &#x25; &#x28;day, count&#x29;&#x29;&#xa;&#xa;&#xa;res &#x3d; pd.DataFrame&#x28;output&#x29;&#xa;&#xa;</py_script>
+<py_script>&#xa;from __future__ import print_function&#xa;import pandas as pd&#xa;import sys&#xa;import os&#xa;SPARK_HOME &#x3d; os.environ&#x5b;&#x22;SPARK_HOME&#x22;&#x5d;&#x3d;&#x22;&#x2f;srv&#x2f;spark&#x22;&#xa;PYTHONPATH&#x3d;os.environ&#x5b;&#x22;PYTHONPATH&#x22;&#x5d;&#x3d; &#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j-0.8.2.1-src.zip&#x3a;&#x2f;srv&#x2f;spark&#x2f;spark&#x2f;python&#x22;&#xa;PYSPARK_PYTHON &#x3d; os.environ&#x5b;&#x22;PYSPARK_PYTHON&#x22;&#x5d;&#x3d;&#x22;python2&#x22;&#xa;&#xa;&#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x2f;accumulators&#x22;&#x29; &#xa;from operator import add&#xa;&#xa;&#xa;&#xa;mesParam &#x3d; config.loc&#x5b;0,&#x22;mesParam&#x22;&#x5d;&#xa;anoParam &#x3d; config.loc&#x5b;0,&#x22;anoParam&#x22;&#x5d;&#xa;dominioParam &#x3d; config.loc&#x5b;0,&#x22;dominioParam&#x22;&#x5d;&#xa;filename &#x3d; config.loc&#x5b;0,&#x22;filename&#x22;&#x5d;&#xa;&#xa;from pyspark.sql import SparkSession&#xa;&#xa;spark &#x3d; SparkSession&#x5c;&#xa;    .builder&#x5c;&#xa;    .appName&#x28;&#x22;PythonQuery&#x22;&#x29;&#x5c;&#xa;	.master&#x28;&#x22;spark&#x3a;&#x2f;&#x2f;localhost&#x3a;7077&#x22;&#x29;&#x5c;&#xa;    .getOrCreate&#x28;&#x29;&#xa;&#xa;lines &#x3d; spark.read.csv&#x28;filename&#x29;&#xa;&#xa;lines &#x3d; lines.rdd.map&#x28;lambda row&#x3a; &#x5b;row&#x5b;0&#x5d;,row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;0&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;1&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;2&#x5d;,row&#x5b;2&#x5d;&#x5d;&#x29;&#xa;&#xa;&#xa;lines &#x3d; lines.filter&#x28;lambda w&#x3a; w&#x5b;0&#x5d; &#x3d;&#x3d; dominioParam&#x29;&#xa;lines &#x3d; lines.filter&#x28;lambda w&#x3a; int&#x28;w&#x5b;1&#x5d;&#x29; &#x3d;&#x3d; anoParam&#x29;&#xa;lines &#x3d; lines.filter&#x28;lambda w&#x3a; int&#x28;w&#x5b;2&#x5d;&#x29; &#x3d;&#x3d; mesParam&#x29;&#xa;&#xa;&#xa;&#xa;lines &#x3d; lines.map&#x28;lambda x&#x3a; &#x28;int&#x28;x&#x5b;3&#x5d;&#x29;, int&#x28;x&#x5b;4&#x5d;&#x29;&#x29;&#x29;&#xa;&#xa;lines &#x3d; lines.aggregateByKey&#x28;&#x28;0,0&#x29;, lambda a,b&#x3a; &#x28;a&#x5b;0&#x5d; &#x2b; b,    a&#x5b;1&#x5d; &#x2b; 1&#x29;, lambda a,b&#x3a; &#x28;a&#x5b;0&#x5d; &#x2b; b&#x5b;0&#x5d;, a&#x5b;1&#x5d; &#x2b; b&#x5b;1&#x5d;&#x29;&#x29;&#xa;&#xa;counts &#x3d; lines.mapValues&#x28;lambda v&#x3a; v&#x5b;0&#x5d;&#x2f;v&#x5b;1&#x5d;&#x29;&#xa;&#xa;counts &#x3d; counts.sortBy&#x28;lambda a&#x3a; a&#x5b;0&#x5d;&#x29;&#xa;&#xa;output &#x3d; counts.collect&#x28;&#x29;&#xa;&#xa;spark.stop&#x28;&#x29;&#xa;SparkSession._instantiatedContext &#x3d; None&#xa;&#xa;res &#x3d; pd.DataFrame&#x28;output&#x29;&#xa;&#xa;</py_script>
 <load_script_at_runtime>N</load_script_at_runtime>
 <script_to_load/>
 <continue_on_unset_vars>N</continue_on_unset_vars>
@@ -622,8 +627,53 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>368</xloc>
-      <yloc>80</yloc>
+      <xloc>352</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+    </step>
+
+  <step>
+    <name>Get File Names</name>
+    <type>GetFileNames</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <filter>
+      <filterfiletype>all_files</filterfiletype>
+    </filter>
+    <doNotFailIfNoFile>N</doNotFailIfNoFile>
+    <rownum>N</rownum>
+    <isaddresult>Y</isaddresult>
+    <filefield>N</filefield>
+    <rownum_field/>
+    <filename_Field/>
+    <wildcard_Field/>
+    <exclude_wildcard_Field/>
+    <dynamic_include_subfolders>N</dynamic_include_subfolders>
+    <limit>0</limit>
+    <file>
+      <name>&#x2f;home&#x2f;joaquim&#x2f;TrabalhoSpark&#x2f;file&#x2f;</name>
+      <filemask>.&#x2a;.csv</filemask>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>159</yloc>
       <draw>Y</draw>
     </GUI>
     </step>

@@ -477,42 +477,6 @@
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
-      <field>
-        <name>anoParam</name>
-        <variable>&#x24;&#x7b;anoParam&#x7d;</variable>
-        <type>Number</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>mesParam</name>
-        <variable>&#x24;&#x7b;mesParam&#x7d;</variable>
-        <type>Number</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>dominioParam</name>
-        <variable>&#x24;&#x7b;dominioParam&#x7d;</variable>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
     </fields>
     <cluster_schema/>
     <remotesteps>
@@ -545,7 +509,7 @@
 <reservoir_sampling_size/>
 <reservoir_sampling_seed>1</reservoir_sampling_seed>
 <include_input_as_output>N</include_input_as_output>
-<py_script>from __future__ import print_function&#xa;import pandas as pd&#xa;import sys&#xa;import os&#xa;SPARK_HOME &#x3d; os.environ&#x5b;&#x22;SPARK_HOME&#x22;&#x5d;&#x3d;&#x22;&#x2f;srv&#x2f;spark&#x22;&#xa;PYTHONPATH&#x3d;os.environ&#x5b;&#x22;PYTHONPATH&#x22;&#x5d;&#x3d; &#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j-0.8.2.1-src.zip&#x3a;&#x2f;srv&#x2f;spark&#x2f;spark&#x2f;python&#x22;&#xa;&#xa;&#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x2f;accumulators&#x22;&#x29; &#xa;from operator import add&#xa;from pyspark.sql import SparkSession&#xa;&#xa;&#xa;param &#x3d; config.loc&#x5b;0,&#x22;param&#x22;&#x5d;&#xa;mesParam &#x3d; config.loc&#x5b;0,&#x22;mesParam&#x22;&#x5d;&#xa;anoParam &#x3d; config.loc&#x5b;0,&#x22;anoParam&#x22;&#x5d;&#xa;dominioParam &#x3d; config.loc&#x5b;0,&#x22;dominioParam&#x22;&#x5d;&#xa;&#xa;&#xa;&#xa;&#xa;spark &#x3d; SparkSession&#x5c;&#xa;    .builder&#x5c;&#xa;    .appName&#x28;&#x22;PythonQuery&#x22;&#x29;&#x5c;&#xa;    .getOrCreate&#x28;&#x29;&#xa;&#xa;lines &#x3d; spark.read.csv&#x28;&#x27;&#x2f;home&#x2f;joaquim&#x2f;TrabalhoSpark&#x2f;dados&#x2f;PageViewsPerDayAll.csv&#x27;&#x29;&#xa;&#xa;lines &#x3d; lines.rdd.map&#x28;lambda row&#x3a; &#x5b;row&#x5b;0&#x5d;,row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;0&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;1&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;2&#x5d;,row&#x5b;2&#x5d;&#x5d;&#x29;&#xa;&#xa;counts &#x3d; lines.map&#x28;lambda x&#x3a; &#x28;x&#x5b;0&#x5d;, -int&#x28;x&#x5b;4&#x5d;&#x29;&#x29;&#x29;.reduceByKey&#x28;add&#x29;&#xa;&#xa;counts &#x3d; counts.sortBy&#x28;&#x28;lambda a&#x3a; a&#x5b;1&#x5d;&#x29;&#x29;&#xa;&#xa;output &#x3d; counts.collect&#x28;&#x29;&#xa;&#xa;for &#x28;day, count&#x29; in output&#x3a;&#xa;    print&#x28;&#x22;&#x25;s&#x3a; &#x25;i&#x22; &#x25; &#x28;day, count&#x29;&#x29;&#xa;&#xa;&#xa;res &#x3d; pd.DataFrame&#x28;output&#x29;&#xa;&#xa;</py_script>
+<py_script>from __future__ import print_function&#xa;import pandas as pd&#xa;import sys&#xa;import os&#xa;SPARK_HOME &#x3d; os.environ&#x5b;&#x22;SPARK_HOME&#x22;&#x5d;&#x3d;&#x22;&#x2f;srv&#x2f;spark&#x22;&#xa;PYTHONPATH&#x3d;os.environ&#x5b;&#x22;PYTHONPATH&#x22;&#x5d;&#x3d; &#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j-0.8.2.1-src.zip&#x3a;&#x2f;srv&#x2f;spark&#x2f;spark&#x2f;python&#x22;&#xa;&#xa;&#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x2f;py4j&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;lib&#x22;&#x29; &#xa;sys.path.append&#x28;&#x22;&#x2f;srv&#x2f;spark&#x2f;python&#x2f;pyspark&#x2f;accumulators&#x22;&#x29; &#xa;from operator import add&#xa;from pyspark.sql import SparkSession&#xa;&#xa;&#xa;&#xa;spark &#x3d; SparkSession&#x5c;&#xa;    .builder&#x5c;&#xa;    .appName&#x28;&#x22;PythonQuery&#x22;&#x29;&#x5c;&#xa;    .getOrCreate&#x28;&#x29;&#xa;&#xa;lines &#x3d; spark.read.csv&#x28;&#x27;&#x2f;home&#x2f;joaquim&#x2f;TrabalhoSpark&#x2f;dados&#x2f;PageViewsPerDayAll.csv&#x27;&#x29;&#xa;&#xa;lines &#x3d; lines.rdd.map&#x28;lambda row&#x3a; &#x5b;row&#x5b;0&#x5d;,row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;0&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;1&#x5d;, row&#x5b;1&#x5d;.split&#x28;&#x22;&#x2f;&#x22;&#x29;&#x5b;2&#x5d;,row&#x5b;2&#x5d;&#x5d;&#x29;&#xa;&#xa;counts &#x3d; lines.map&#x28;lambda x&#x3a; &#x28;x&#x5b;0&#x5d;, -int&#x28;x&#x5b;4&#x5d;&#x29;&#x29;&#x29;.reduceByKey&#x28;add&#x29;&#xa;&#xa;counts &#x3d; counts.sortBy&#x28;&#x28;lambda a&#x3a; a&#x5b;1&#x5d;&#x29;&#x29;&#xa;&#xa;output &#x3d; counts.collect&#x28;&#x29;&#xa;&#xa;for &#x28;day, count&#x29; in output&#x3a;&#xa;    print&#x28;&#x22;&#x25;s&#x3a; &#x25;i&#x22; &#x25; &#x28;day, count&#x29;&#x29;&#xa;&#xa;&#xa;res &#x3d; pd.DataFrame&#x28;output&#x29;&#xa;&#xa;</py_script>
 <load_script_at_runtime>N</load_script_at_runtime>
 <script_to_load/>
 <continue_on_unset_vars>N</continue_on_unset_vars>
